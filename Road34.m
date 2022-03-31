@@ -1,3 +1,10 @@
+##########################################################################################
+############## This function divide the roads into 10 meter partitions and  ###############
+############## count the number of pixels within each section and  #######################
+############# pass it into the decision making algorithm (Neuro fuzzy model) ############
+##########################################################################################
+
+
 function anfisresults=road34
 a=dlmread('C:\Users\moein\Desktop\my thises\point_offset_start_end.txt');
 [p q]=size(a);
