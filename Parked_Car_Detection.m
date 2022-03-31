@@ -1,3 +1,8 @@
+##########################################################################################################
+###### This function is written in MATLAB and detect parked cars from moving cars      ###################
+####### by calculating the car pixels distance to the center of the roads on satellite images ###########
+########################################################################################################
+
 function  classifiedroad3class=fasele_noghte_az_khat
 
 % clc;
