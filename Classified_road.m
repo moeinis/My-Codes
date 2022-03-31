@@ -1,3 +1,9 @@
+####################################################################################################################################
+###### This function is a part of my thesis code about "Road damage detection after an earthquake" #################################
+####### it creats 30 image features and use SVM classification to classify them into five class of road, shadow, tree, car,...###### 
+####################################################################################################################################
+
+
 function predicted_label_kol=classified_road
 %%  glcm & gabor generation
  %clc;
