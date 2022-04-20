@@ -1,10 +1,10 @@
-# Installing "neuralnet" & "PerformanceAnalytics" Packages 
+###### Installing "neuralnet" & "PerformanceAnalytics" Packages 
 # install.packages("neuralnet")
 library(neuralnet)
 install.packages("PerformanceAnalytics")
 library("PerformanceAnalytics")
 
-# Importing dataset & Data Cleansing 
+##### Importing dataset & Data slicing and EDA
 set.seed(500)
 dataset = read.csv(file = "Abol_V5.CSV")
 dataset = dataset[1:90, 2:7]
@@ -13,7 +13,7 @@ chart.Correlation(dataset, histogram=TRUE, pch=19)
 
 
 
-# Scaling data for the NN
+###### Scaling data for the NN
 maxs <- apply(dataset, 2, max) 
 mins <- apply(dataset, 2, min)
 scaled <- as.data.frame(scale(dataset, center = mins, scale = maxs - mins))
@@ -34,10 +34,12 @@ ANN.MSE.fold <- rep(0, kfolds)
 for(k in 1:kfolds){
   fold <- which(folds == 1)
   
-  # Train-test split(test_&train_ are dataset not just the dependent variable)
+###### Train-test split(test_&train_ are dataset (with response var))
   train_ <- scaled[-fold,]
   test_ <- na.omit(scaled[fold,])
   
+  
+######## Model building
   n <- names(train_)
   f <- as.formula(paste("ActualPressure ~", paste(n[!n %in% "ActualPressure"], collapse = " + ")))
   nn <- neuralnet(f,data=train_,hidden=c(9,6),linear.output=T)
@@ -51,7 +53,7 @@ for(k in 1:kfolds){
   pr.nn_ <- pr.nn$net.result*(max(dataset$ActualPressure)-min(dataset$ActualPressure))+min(dataset$ActualPressure)
   test.r <- (test_$ActualPressure)*(max(dataset$ActualPressure)-min(dataset$ActualPressure))+min(dataset$ActualPressure)
   
-  # Calculating MSE
+####### Model evaluation-  Calculating MSE
   MSE.nn <- sum((test.r - pr.nn_)^2)/nrow(test_)
   MSE.nn
   ANN.MSE.fold[k] <- sum((test.r - pr.nn_)^2)/nrow(test_)
@@ -61,6 +63,8 @@ Observed.test=test.r
 Predicted.ANN=pr.nn_
 test.error.fold <- mean(ANN.MSE.fold)
 test.error.fold
+
+######## Visualization
 plot(Observed.test,Predicted.ANN,col='red',main='Observed Pressure vs Predicted on Test data 1/5',pch=18,cex=0.7)
 abline(0,1,lwd=2)
 legend('bottomright',legend='NN',pch=18,col='red', bty='n')
